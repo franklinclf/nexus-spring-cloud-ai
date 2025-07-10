@@ -71,7 +71,7 @@ Este serviço é parte de um ecossistema maior. Você pode encontrar outros comp
   para todas as requisições, roteando-as para os serviços apropriados.
 * 🧠 **[Nexus Support - MCP Server](https://github.com/franklinclf/nexus-spring-cloud-mcp)**: Servidor para o Model
   Client Pattern, orquestrando as interações com modelos de IA.
-* ☁️ **[Nexus Support - Serverless Function](https://github.com/franklinclf/nexus-spring-serverless)**: Componente
+* ☁️ **[Nexus Support - Serverless Function](https://github.com/franklinclf/nexus-spring-cloud-serverless)**: Componente
   serverless para tarefas específicas ou escaláveis.
 
 ## 📈 Monitoramento e Observabilidade
