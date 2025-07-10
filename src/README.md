@@ -35,7 +35,7 @@ ambiente distribuído para melhorar a eficiência do suporte.
 
 Este serviço é construído sobre um stack robusto, aproveitando o ecossistema Spring:
 
-* **Spring Boot (3.5.3):** Framework principal para o desenvolvimento de aplicações Java.
+* **Spring Boot (3.5.3):** Framework principal para o desenvolvimento do ecossistema.
 * **Java (24):** Linguagem de programação utilizada.
 * **Spring Cloud (2025.0.0):** Para orquestração e padrões de microsserviços, incluindo:
     * `spring-cloud-starter-netflix-eureka-client`: **Descoberta de Serviços** (para registrar-se e encontrar outros
