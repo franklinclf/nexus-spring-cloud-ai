@@ -69,8 +69,7 @@ Este serviço é parte de um ecossistema maior. Você pode encontrar outros comp
   de descoberta para registrar e localizar outros microsserviços.
 * 🧭 **[Nexus Support - Gateway](https://github.com/franklinclf/nexus-spring-cloud-gateway)**: Ponto de entrada unificado
   para todas as requisições, roteando-as para os serviços apropriados.
-* 🧠 **[Nexus Support - MCP Server](https://github.com/franklinclf/nexus-spring-cloud-mcp)**: Servidor para o Model
-  Client Pattern, orquestrando as interações com modelos de IA.
+* 🔗 **[Nexus Support - Ticket Service + MCP](https://github.com/franklinclf/nexus-spring-cloud-mcp)**: Serviço que lida com operações e persistências de tickets, expondo rotas consumidas tanto por IA (MCP) ou requisições REST padrão.
 * ☁️ **[Nexus Support - Serverless Function](https://github.com/franklinclf/nexus-spring-cloud-serverless)**: Componente
   serverless para tarefas específicas ou escaláveis.
 
