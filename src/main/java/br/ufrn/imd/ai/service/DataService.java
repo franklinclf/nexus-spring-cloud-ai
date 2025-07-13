@@ -2,7 +2,7 @@ package br.ufrn.imd.ai.service;
 
 import br.ufrn.imd.ai.data.VectorStoreDao;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.reader.markdown.MarkdownDocumentReader;
+import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class DataService {
     }
 
     public ResponseEntity<String> uploadFile(MultipartFile file) throws IOException {
-        MarkdownDocumentReader reader = new MarkdownDocumentReader(file.getInputStream().toString());
+        TikaDocumentReader reader = new TikaDocumentReader(file.getResource());
         List<Document> documents = reader.read();
         List<Document> chunks = textSplitter.split(documents);
         vectorStore.add(chunks);

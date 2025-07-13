@@ -1,6 +1,7 @@
 package br.ufrn.imd.ai.mcp;
 
 import br.ufrn.imd.ai.model.Ticket;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.GetExchange;
@@ -18,6 +19,7 @@ public interface MCPClientInterface extends HttpExchangeAdapter {
     Ticket register(@RequestBody Ticket ticket);
 
     @PatchExchange("/tickets")
+    @Tool
     Ticket updateTicket(@RequestBody Ticket ticket);
 
     @GetExchange("/tickets/{id}")
