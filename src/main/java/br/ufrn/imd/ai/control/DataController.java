@@ -22,4 +22,6 @@ public class DataController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return dataService.uploadFile(file);
     }
+
+
 }
