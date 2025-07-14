@@ -20,7 +20,6 @@ public class PromptingController {
     }
 
     @PostMapping("/triage")
-
     public Ticket getAnalysis(@RequestBody String prompt) {
         return this.promptingService.getAnalysis(prompt);
     }
