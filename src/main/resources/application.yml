@@ -14,6 +14,14 @@ spring:
         max-interval: 2000
         multiplier: 1.1
         max-attempts: 6
+  ai:
+    mcp:
+      client:
+        sse:
+          connections:
+            nexus-mcp:
+              url: http://gateway:8080/nexus
+
   profiles:
     active: dev
 
@@ -27,3 +35,11 @@ eureka:
       enabled: true
   instance:
     instance-id: ${spring.application.name}
+management:
+  endpoint:
+    configprops:
+      access: unrestricted
+      show-values: always
+    env:
+      access: unrestricted
+      show-values: always
