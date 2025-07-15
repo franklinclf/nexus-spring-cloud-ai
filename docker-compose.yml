@@ -1,0 +1,38 @@
+name: ai-cluster
+
+services:
+
+  ai-1:
+    build: ./
+    container_name: ai-1
+    ports:
+      - "8083:8082"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1" ]
+      start_period: 15s
+      interval: 5s
+      timeout: 15s
+      retries: 10
+    volumes:
+      - ai-vector-data:/app/data
+    environment:
+      - SPRING_AI_VECTORSTORE_PATH=/app/data/vectorstore.json
+
+  ai-2:
+    build: ./
+    container_name: ai-2
+    ports:
+      - "8084:8082"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8083/actuator/health || exit 1" ]
+      start_period: 15s
+      interval: 5s
+      timeout: 15s
+      retries: 10
+    volumes:
+      - ai-vector-data:/app/data
+    environment:
+      - SPRING_AI_VECTORSTORE_PATH=/app/data/vectorstore.json
+
+volumes:
+  ai-vector-data:

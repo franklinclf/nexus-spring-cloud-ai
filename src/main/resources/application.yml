@@ -19,7 +19,7 @@ spring:
       client:
         sse:
           connections:
-            nexus-mcp:
+            nexus-mpc:
               url: http://gateway:8080/nexus
 
   profiles:
@@ -33,6 +33,7 @@ eureka:
     fetch-registry: true
     healthcheck:
       enabled: true
+    initial-instance-info-replication-interval-seconds: 0
   instance:
     instance-id: ${spring.application.name}
 management:
