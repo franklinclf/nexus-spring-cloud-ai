@@ -1,6 +1,32 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/nexus-ai-rag
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+  ai:
+    vectorstore:
+      pgvector:
+        index-type: hnsw
+        dimensions: 1536
+        distance-type: cosine_distance
+        initialize-schema: true
+        id-type: uuid
+    mcp:
+      client:
+        toolcallback:
+          enabled: true
+        sse:
+          connections:
+            mcp-server:
+              url: http://gateway:8080/mcp
+              sse-endpoint: /sse
+        request-timeout: 30000
+        enabled: true
   application:
-    name: AI
+    name: ai
   config:
     import: "configserver:"
   cloud:
@@ -14,25 +40,11 @@ spring:
         max-interval: 2000
         multiplier: 1.1
         max-attempts: 6
-  ai:
-    mcp:
-      client:
-        sse:
-          connections:
-            nexus-mpc:
-              url: http://gateway/nexus
 
   profiles:
     active: dev
-
-management:
-  endpoint:
-    configprops:
-      access: unrestricted
-      show-values: always
-    env:
-      access: unrestricted
-      show-values: always
+  main:
+    web-application-type: reactive
 
 eureka:
   client:
@@ -40,9 +52,39 @@ eureka:
       defaultZone: http://eureka-1:8761/eureka/,http://eureka-2:8762/eureka/
     register-with-eureka: true
     fetch-registry: true
-    initial-instance-info-replication-interval-seconds: 0
-    registry-fetch-interval-seconds: 5
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
   instance:
     instance-id: ai-${REPLICA_ID:1}
     hostname: ai-${REPLICA_ID:1}
     app-group-name: ai
+server:
+  port: 8081
+
+management:
+  endpoint:
+    configprops:
+      show-values: always
+      access: unrestricted
+    env:
+      show-values: always
+      access: unrestricted
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      discovery:
+        enabled: true
+    access:
+      default: unrestricted
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  zipkin:
+    tracing:
+      export:
+        enabled: true
+      endpoint: http://host.docker.internal:9411/api/v2/spans
+logging:
+  level:
+    web: debug

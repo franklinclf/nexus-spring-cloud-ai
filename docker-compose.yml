@@ -17,10 +17,12 @@ services:
       - ai-vector-data:/app/data
     environment:
       - SPRING_AI_VECTORSTORE_PATH=/app/data/vectorstore.json
+      - SPRING_AI_OPENAI_API_KEY=AIzaSyCTcYdEcLMEKTajtZAgTtefHrpRWTbw55A
+      - SPRING_AI_OPENAI_EMBEDDING_API_KEY=AIzaSyCTcYdEcLMEKTajtZAgTtefHrpRWTbw55A
       - REPLICA_ID=1
-      - SERVER_PORT=8085
+      - SERVER_PORT=8086
     networks:
-        - nexus-dev
+      - nexus-dev
 
   ai-2:
     build: ./
@@ -37,8 +39,10 @@ services:
       - ai-vector-data:/app/data
     environment:
       - SPRING_AI_VECTORSTORE_PATH=/app/data/vectorstore.json
+      - SPRING_AI_OPENAI_API_KEY=AIzaSyCTcYdEcLMEKTajtZAgTtefHrpRWTbw55A
+      - SPRING_AI_OPENAI_EMBEDDING_API_KEY=AIzaSyCTcYdEcLMEKTajtZAgTtefHrpRWTbw55A
       - REPLICA_ID=2
-      - SERVER_PORT=8086
+      - SERVER_PORT=8087
     networks:
       - nexus-dev
 

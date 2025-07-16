@@ -42,6 +42,7 @@ public class PromptingService {
     public List<Ticket> findTicketsBySimilarity(String query) {
         Ticket[] tickets = chatClient.prompt()
                 .advisors(new QuestionAnswerAdvisor(dataService.getStore()))
+                .toolNames("searchTicketsBySimilarity")
                 .system(systemRole)
                 .user(query)
                 .call()
