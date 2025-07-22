@@ -1,8 +1,10 @@
 package br.ufrn.imd.ai.control;
 
 import br.ufrn.imd.ai.model.Ticket;
+import br.ufrn.imd.ai.model.TriageAnalysis;
 import br.ufrn.imd.ai.service.PromptingService;
 import jakarta.ws.rs.QueryParam;
+import org.springframework.ai.util.json.JsonParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +22,9 @@ public class PromptingController {
     }
 
     @PostMapping("/triage")
-    public Ticket getAnalysis(@RequestBody String prompt) {
-        return this.promptingService.getAnalysis(prompt);
+    public TriageAnalysis getAnalysis(@RequestBody Ticket customerTicket) {
+        String parsedPrompt = JsonParser.toJson(customerTicket);
+        return this.promptingService.getAnalysis(parsedPrompt);
     }
 
     @GetMapping("/find")

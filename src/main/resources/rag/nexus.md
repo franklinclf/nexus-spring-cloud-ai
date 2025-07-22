@@ -143,6 +143,78 @@ sistemas de help desk modernos. As categorias são baseadas nos tipos de inciden
 
 - UNKNOWN: Categoria fallback
 
+## Parte 2: Especificação do Assistente de Triagem
+
+### 2.1 Estrutura de Resposta da Triagem de Ticket
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/triage-analysis.schema.json",
+  "title": "TriageAnalysis",
+  "type": "object",
+  "properties": {
+    "suggestedTitle": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "impactAnalysis": {
+      "type": "string"
+    },
+    "urgencyAnalysis": {
+      "type": "string"
+    },
+    "predictedCategory": {
+      "type": "string",
+      "enum": [
+        "HARDWARE",
+        "SOFTWARE",
+        "NETWORK",
+        "ACCOUNT_SECURITY",
+        "SERVICE_REQUEST",
+        "UNKNOWN"
+      ]
+    },
+    "assignedPriority": {
+      "type": "string",
+      "enum": [
+        "P1_CRITICAL",
+        "P2_HIGH",
+        "P3_MEDIUM",
+        "P4_LOW"
+      ]
+    },
+    "initialApiResponse": {
+      "type": "object",
+      "properties": {
+        "messageToCustomer": {
+          "type": "string"
+        },
+        "estimatedResolutionTime": {
+          "type": "string"
+        }
+      },
+      "required": ["messageToCustomer", "estimatedResolutionTime"]
+    },
+    "suggestedConsultantResponse": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "suggestedTitle",
+    "summary",
+    "impactAnalysis",
+    "urgencyAnalysis",
+    "predictedCategory",
+    "assignedPriority",
+    "initialApiResponse",
+    "suggestedConsultantResponse"
+  ]
+}
+```
+
 ### 2.2 Exemplos Few-Shot
 
 Os exemplos a seguir (pares de mensagens user/assistant) demonstram o comportamento esperado.
@@ -153,16 +225,17 @@ user:
 
 ```json
 {
-  "ticketId": "e2a37c8f-5a1a-4dcd-9029-1e3f4cb8b1b3",
+  "ticketId": null,
   "customerInfo": {
     "customerName": "Joana Silva",
     "companyName": "VendasRápidas Ltda",
     "contactEmail": "joana.silva@vendasrapida.com"
   },
-  "title": "",
+  "title": "Alguém me ajuda!!!",
   "initialProblem": "SOCORRO!! O servidor principal de vendas está fora do ar, ninguém da minha equipe consegue acessar nosso CRM e não podemos processar nenhum pedido. Isso é um desastre completo! O nome da minha empresa é VendasRápidas Ltda e meu nome é Joana Silva.",
   "status": "ANALYZING",
-  "creationTimestamp": "2025-07-09T16:00:00-03:00"
+  "creationTimestamp": "2025-07-09T16:00:00-03:00",
+  "triageAnalysis": null
 }
 ```
 
@@ -222,168 +295,5 @@ assistant:
     },
     "suggestedConsultantResponse": "Separar mouse reserva para substituição conforme disponibilidade de estoque. Entrar em contato com Carlos Pereira para alinhar a entrega. Ticket classificado como Prioridade P4 (baixa urgência e impacto localizado)."
   }
-}
-
-```
-
-### 2.3 Definição da Função `createInitialTicket`
-
-```json
-{
-  "name": "createInitialTicket",
-  "description": "Cria um novo ticket de suporte, analisado pela IA.",
-  "parameters": {
-    "type": "object",
-    "properties": {
-      "customerInfo": {
-        "type": "object",
-        "properties": {
-          "customerName": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "contactEmail": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "customerName",
-          "companyName",
-          "contactEmail"
-        ]
-      },
-      "title": {
-        "type": "string"
-      },
-      "initialProblem": {
-        "type": "string"
-      },
-      "status": {
-        "type": "string",
-        "enum": [
-          "ANALYZING"
-        ]
-      },
-      "triageAnalysis": {
-        "type": "object",
-        "properties": {
-          "suggestedTitle": {
-            "type": "string"
-          },
-          "summary": {
-            "type": "string"
-          },
-          "impactAnalysis": {
-            "type": "string"
-          },
-          "urgencyAnalysis": {
-            "type": "string"
-          },
-          "predictedCategory": {
-            "type": "string",
-            "enum": [
-              "HARDWARE",
-              "SOFTWARE",
-              "NETWORK",
-              "ACCOUNT_SECURITY",
-              "SERVICE_REQUEST",
-              "UNKNOWN"
-            ]
-          },
-          "assignedPriority": {
-            "type": "string",
-            "enum": [
-              "P1_CRITICAL",
-              "P2_HIGH",
-              "P3_MEDIUM",
-              "P4_LOW"
-            ]
-          },
-          "initialApiResponse": {
-            "type": "object",
-            "properties": {
-              "messageToCustomer": {
-                "type": "string"
-              },
-              "estimatedResolutionTime": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "messageToCustomer",
-              "estimatedResolutionTime"
-            ]
-          },
-          "suggestedConsultantResponse": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "suggestedTitle",
-          "summary",
-          "impactAnalysis",
-          "urgencyAnalysis",
-          "predictedCategory",
-          "assignedPriority",
-          "initialApiResponse",
-          "suggestedConsultantResponse"
-        ]
-      }
-    },
-    "required": [
-      "customerInfo",
-      "title",
-      "initialProblem",
-      "status",
-      "triageAnalysis"
-    ]
-  }
-}
-```
-
-## Parte 3: Modelo de Dados Java
-
-```java
-public record CustomerInfo(String customerName, String companyName, String contactEmail) {
-}
-
-public record InitialApiResponse(String messageToCustomer, String estimatedResolutionTime) {
-}
-
-public record TriageAnalysis(
-        String summary,
-        String impactAnalysis,
-        String urgencyAnalysis,
-        ProblemCategory predictedCategory,
-        Priority assignedPriority,
-        InitialApiResponse initialApiResponse,
-        String suggestedConsultantResponse
-) {
-}
-
-public record Ticket(
-        UUID ticketId,
-        CustomerInfo customerInfo,
-        String initialProblem,
-        TicketStatus status,
-        OffsetDateTime creationTimestamp,
-        TriageAnalysis triageAnalysis
-) {
-}
-```
-
-```java
-public enum Priority {
-    P1_CRITICAL, P2_HIGH, P3_MEDIUM, P4_LOW
-}
-
-public enum TicketStatus {
-    NEW, ANALYZING, AWAITING_CONFIRMATION, OPEN, RESOLVED, CLOSED
-}
-
-public enum ProblemCategory {
-    HARDWARE, SOFTWARE, NETWORK, ACCOUNT_SECURITY, SERVICE_REQUEST, UNKNOWN
 }
 ```

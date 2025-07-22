@@ -2,6 +2,7 @@ package br.ufrn.imd.ai.control;
 
 import br.ufrn.imd.ai.service.DataService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,8 @@ public class DataController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
+
         return dataService.uploadFile(file);
     }
 

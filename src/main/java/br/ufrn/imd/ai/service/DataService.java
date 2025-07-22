@@ -22,11 +22,17 @@ public class DataService {
         return vectorStore;
     }
 
-    public ResponseEntity<String> uploadFile(MultipartFile file) {
-        TikaDocumentReader reader = new TikaDocumentReader(file.getResource());
-        List<Document> documents = reader.read();
-        List<Document> chunks = textSplitter.split(documents);
-        vectorStore.add(chunks);
-        return ResponseEntity.ok("Arquivo: " + file.getOriginalFilename() + " (" + file.getSize() + " bytes) carregado com sucesso.");
+    public String uploadFile(MultipartFile file) {
+        try {
+            TikaDocumentReader reader = new TikaDocumentReader(file.getResource());
+            List<Document> documents = reader.read();
+            List<Document> chunks = textSplitter.split(documents);
+            vectorStore.add(chunks);
+            return "Arquivo processado e adicionado à Vector Store.";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Error processing file: " + e.getMessage();
+        }
     }
 }
