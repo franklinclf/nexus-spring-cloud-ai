@@ -5,7 +5,6 @@ import br.ufrn.imd.ai.model.TriageAnalysis;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,6 +23,7 @@ public class PromptingService {
 
     @Value("classpath:prompt/search.md")
     private Resource searchRole;
+
     public PromptingService(ChatClient.Builder chatClient, DataService dataService, ToolCallbackProvider tools) {
         this.chatClient = chatClient.defaultOptions(ChatOptions.builder()
                         .temperature(0.4)
